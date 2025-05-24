@@ -1,6 +1,6 @@
 # Copilot Prompt Plugin
 
-![Build](https://github.com/seb-noirot/copilot-prompt-plugin/workflows/Build/badge.svg)
+![Build](https://github.com/seb-noirot/copilot-prompt/workflows/Build/badge.svg)
 [![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
 
@@ -39,7 +39,7 @@ The Copilot Prompt Plugin automatically generates a `.github/copilot-instruction
 
 - Manually:
 
-  Download the [latest release](https://github.com/seb-noirot/copilot-prompt-plugin/releases/latest) and install it manually using
+  Download the [latest release](https://github.com/seb-noirot/copilot-prompt/releases/latest) and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
 ## Development
@@ -50,8 +50,8 @@ To test the plugin locally during development:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/seb-noirot/copilot-prompt-plugin.git
-   cd copilot-prompt-plugin
+   git clone https://github.com/seb-noirot/copilot-prompt.git
+   cd copilot-prompt
    ```
 
 2. **Build the plugin**:

@@ -1,6 +1,6 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
-# copilot-prompt-plugin Changelog
+# copilot-prompt Changelog
 
 ## [Unreleased]
 ### Added
