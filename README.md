@@ -1,26 +1,26 @@
 # Copilot Prompt Plugin
 
 ![Build](https://github.com/seb-noirot/copilot-prompt/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
+[![Version](https://img.shields.io/jetbrains/plugin/v/27460.svg)](https://plugins.jetbrains.com/plugin/27460)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/27460.svg)](https://plugins.jetbrains.com/plugin/27460)
 
-An IntelliJ IDEA plugin that automatically generates a `.github/copilot-instructions.md` file when a project is opened. This file is used by GitHub Copilot to provide context-aware suggestions.
+An IntelliJ IDEA plugin that manages GitHub Copilot instruction files (`.github/copilot-instructions.md`) to enhance AI-assisted coding with customized context.
 
 <!-- Plugin description -->
-The Copilot Prompt Plugin automatically generates a `.github/copilot-instructions.md` file when a project is opened in IntelliJ IDEA. This file is used by GitHub Copilot to provide context-aware suggestions.
+The Copilot Prompt Plugin simplifies the creation and management of GitHub Copilot instruction files (`.github/copilot-instructions.md`) in your projects. These files provide context to GitHub Copilot, resulting in more accurate and project-specific code suggestions.
 
 ## Features
 
-- **Automatic Prompt Generation**: When a project is opened, the plugin checks if `.github/copilot-instructions.md` exists. If it doesn't, it creates the file using the best matching profile.
-- **Multiple Prompt Profiles**: Define different prompt templates for different types of projects using regex patterns to match against project paths.
-- **Profile Management**: Easily manage your prompt profiles through the settings UI.
-- **Manual Application**: Apply the best matching profile at any time using the "Apply Copilot Prompt" action in the Tools menu.
+- **Custom Instruction Management**: Create, edit, and manage custom instructions for GitHub Copilot directly from IntelliJ IDEA.
+- **One-Click Application**: Apply your Copilot prompt to any project with a single click from the Tools menu.
+- **Persistent Settings**: Your prompt templates are saved in IDE settings and can be reused across projects.
+- **Path-Based Organization**: Store your Copilot instructions in the standardized `.github/copilot-instructions.md` path for compatibility with GitHub's specifications.
 
 ## Usage
 
-1. **Configure Profiles**: Go to Settings > Tools > Copilot Prompt to configure your prompt profiles.
-2. **Automatic Generation**: When you open a project, the plugin will automatically create the `.github/copilot-instructions.md` file if it doesn't exist.
-3. **Manual Application**: Use the "Apply Copilot Prompt" action from the Tools menu to manually apply the best matching profile.
+1. **Configure Your Prompt**: Go to Settings > Tools > Copilot Prompt to customize your instruction template.
+2. **Apply to Project**: Use the "Apply to Project" action from the Tools > Copilot Prompt menu to create or update the `.github/copilot-instructions.md` file.
+3. **Benefit from Better Suggestions**: GitHub Copilot will now use your custom instructions when generating suggestions.
 <!-- Plugin description end -->
 
 ## Installation
@@ -32,9 +32,9 @@ The Copilot Prompt Plugin automatically generates a `.github/copilot-instruction
 
 - Using JetBrains Marketplace:
 
-  Go to [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID) and install it by clicking the <kbd>Install to ...</kbd> button in case your IDE is running.
+  Go to [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/27460) and install it by clicking the <kbd>Install to ...</kbd> button in case your IDE is running.
 
-  You can also download the [latest release](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID/versions) from JetBrains Marketplace and install it manually using
+  You can also download the [latest release](https://plugins.jetbrains.com/plugin/27460/versions) from JetBrains Marketplace and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
 - Manually:
@@ -71,39 +71,6 @@ To test the plugin locally during development:
    ```
    This will create a plugin distribution in `build/distributions` that can be installed in IntelliJ IDEA.
 
-### Configuration
+### Adding the Plugin to Your Website
 
-The plugin configuration is stored in `gradle.properties`. You can modify the following properties:
-
-- `pluginVersion`: The version of the plugin
-- `pluginSinceBuild`: The minimum supported IntelliJ build
-- `pluginUntilBuild`: The maximum supported IntelliJ build
-- `platformVersion`: The version of IntelliJ IDEA to use for development
-
-### Running Tests
-
-The plugin includes unit tests for the core functionality. To run the tests:
-
-```bash
-./gradlew test
-```
-
-This will run all the tests and generate a report in `build/reports/tests/test/index.html`.
-
-You can also run specific tests:
-
-```bash
-./gradlew test --tests "com.github.sebnoirot.copilotpromptplugin.model.PromptProfileTest"
-```
-
-The tests cover the following components:
-
-- **PromptProfile**: Tests for the profile model, including validation and matching logic
-- **CopilotPromptSettings**: Tests for the settings component, including profile management
-- **ApplyCopilotPromptAction**: Tests for the action component
-
----
-Plugin based on the [IntelliJ Platform Plugin Template][template].
-
-[template]: https://github.com/JetBrains/intellij-platform-plugin-template
-[docs:plugin-description]: https://plugins.jetbrains.com/docs/intellij/plugin-user-experience.html#plugin-description-and-presentation
+To showcase the plugin on your website, you can use the JetBrains Marketplace widget:
