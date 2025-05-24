@@ -1,15 +1,36 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.sebnoirot.copilotpromptplugin</id>
-    <name>copilot-prompt-plugin</name>
+    <name>Copilot Prompt</name>
     <vendor>seb-noirot</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
-
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.sebnoirot.copilotpromptplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
         <postStartupActivity implementation="com.github.sebnoirot.copilotpromptplugin.startup.MyProjectActivity" />
+        <applicationService serviceImplementation="com.github.sebnoirot.copilotpromptplugin.settings.CopilotPromptSettings"/>
+        <applicationConfigurable
+            parentId="tools"
+            instance="com.github.sebnoirot.copilotpromptplugin.settings.CopilotPromptConfigurable"
+            id="com.github.sebnoirot.copilotpromptplugin.settings.CopilotPromptConfigurable"
+            displayName="Copilot Prompt"/>
+        <notificationGroup id="Copilot Prompt" displayType="BALLOON" />
     </extensions>
+
+    <actions>
+        <group id="com.github.sebnoirot.copilotpromptplugin.actions.CopilotPromptActionGroup"
+               text="Copilot Prompt"
+               description="Copilot Prompt actions"
+               popup="true">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <action id="com.github.sebnoirot.copilotpromptplugin.actions.ApplyCopilotPromptAction"
+                    class="com.github.sebnoirot.copilotpromptplugin.actions.ApplyCopilotPromptAction"
+                    text="Apply to Project"
+                    description="Apply the best matching Copilot prompt profile to the current project"/>
+            <action id="com.github.sebnoirot.copilotpromptplugin.actions.OpenCopilotPromptSettingsAction"
+                    class="com.github.sebnoirot.copilotpromptplugin.actions.OpenCopilotPromptSettingsAction"
+                    text="Settings"
+                    description="Open copilot prompt settings"/>
+        </group>
+    </actions>
 </idea-plugin>
