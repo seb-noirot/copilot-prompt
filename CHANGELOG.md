@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Add support for Git commit instructions in `.github/git-commit-instructions.md`.
+
 ## [0.0.2] - 2025-05-24
 
 ### Updated

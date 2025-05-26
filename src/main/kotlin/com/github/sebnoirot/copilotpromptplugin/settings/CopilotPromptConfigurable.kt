@@ -56,7 +56,21 @@ class CopilotPromptSettingsComponent(private val settings: CopilotPromptSettings
             editor.settings.isLineMarkerAreaShown = true
         }
     }
+
+    private val gitCommitInstructionsArea = EditorTextField("", null, FileTypeManager.getInstance().getFileTypeByExtension("md")).apply {
+        setOneLineMode(false)
+        setPreferredWidth(JBUI.scale(400))
+        setMinimumSize(Dimension(JBUI.scale(400), JBUI.scale(200)))
+        addSettingsProvider { editor: EditorEx ->
+            editor.setVerticalScrollbarVisible(true)
+            editor.setHorizontalScrollbarVisible(true)
+            editor.settings.isLineNumbersShown = true
+            editor.settings.isLineMarkerAreaShown = true
+        }
+    }
+
     private val validationLabel = JBLabel()
+    private val gitCommitValidationLabel = JBLabel()
     private var hasUnsavedChanges = false
     private val saveButton = JButton("Save").apply {
         addActionListener {
@@ -72,7 +86,7 @@ class CopilotPromptSettingsComponent(private val settings: CopilotPromptSettings
     val panel: JComponent = JPanel(BorderLayout()).apply {
         // Create the editor panel with proper layout and spacing
         val editorPanel = JPanel().apply {
-            layout = GridLayoutManager(3, 1, JBUI.insets(10), JBUI.scale(5), JBUI.scale(5))
+            layout = GridLayoutManager(6, 1, JBUI.insets(10), JBUI.scale(5), JBUI.scale(5))
 
             // Prompt Content label
             add(JBLabel("Copilot prompt content:"),
@@ -88,9 +102,30 @@ class CopilotPromptSettingsComponent(private val settings: CopilotPromptSettings
                     GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null, 0, false))
 
-            // Validation area
+            // Validation area for prompt
             add(validationLabel,
                 GridConstraints(2, 0, 1, 1,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                    GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
+                    null, null, null, 0, false))
+
+            // Git Commit Instructions label
+            add(JBLabel("Git commit instructions content:"),
+                GridConstraints(3, 0, 1, 1,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                    GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
+                    null, null, null, 0, false))
+
+            // Git Commit Instructions editor
+            add(JBScrollPane(gitCommitInstructionsArea),
+                GridConstraints(4, 0, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                    GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null, 0, false))
+
+            // Validation area for git commit instructions
+            add(gitCommitValidationLabel,
+                GridConstraints(5, 0, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
                     null, null, null, 0, false))
@@ -109,7 +144,7 @@ class CopilotPromptSettingsComponent(private val settings: CopilotPromptSettings
         add(editorPanel, BorderLayout.CENTER)
         add(buttonPanel, BorderLayout.SOUTH)
 
-        // Add document listener to the EditorTextField
+        // Add document listener to the EditorTextField for prompt content
         promptContentArea.addDocumentListener(object : com.intellij.openapi.editor.event.DocumentListener {
             override fun documentChanged(event: com.intellij.openapi.editor.event.DocumentEvent) {
                 // Mark that there are unsaved changes
@@ -117,6 +152,17 @@ class CopilotPromptSettingsComponent(private val settings: CopilotPromptSettings
 
                 // Validate the prompt
                 validatePrompt()
+            }
+        })
+
+        // Add document listener to the EditorTextField for git commit instructions
+        gitCommitInstructionsArea.addDocumentListener(object : com.intellij.openapi.editor.event.DocumentListener {
+            override fun documentChanged(event: com.intellij.openapi.editor.event.DocumentEvent) {
+                // Mark that there are unsaved changes
+                hasUnsavedChanges = true
+
+                // Validate the git commit instructions
+                validateGitCommitInstructions()
             }
         })
 
@@ -136,16 +182,37 @@ class CopilotPromptSettingsComponent(private val settings: CopilotPromptSettings
         }
     }
 
+    /**
+     * Validates the current git commit instructions and shows validation errors.
+     */
+    private fun validateGitCommitInstructions() {
+        val errors = settings.validateGitCommitInstructions()
+        if (errors.isNotEmpty()) {
+            gitCommitValidationLabel.text = "<html><font color='red'>Errors: ${errors.joinToString(", ")}</font></html>"
+        } else {
+            gitCommitValidationLabel.text = ""
+        }
+    }
+
     fun reset() {
+        promptContentArea.text = settings.promptContent
+        gitCommitInstructionsArea.text = settings.gitCommitInstructionsContent
+        validatePrompt()
+        validateGitCommitInstructions()
         hasUnsavedChanges = false
     }
 
     fun isModified(): Boolean {
-        return hasUnsavedChanges
+        return hasUnsavedChanges ||
+               promptContentArea.text != settings.promptContent ||
+               gitCommitInstructionsArea.text != settings.gitCommitInstructionsContent
     }
 
     fun apply() {
+        settings.promptContent = promptContentArea.text
+        settings.gitCommitInstructionsContent = gitCommitInstructionsArea.text
+        validatePrompt()
+        validateGitCommitInstructions()
         hasUnsavedChanges = false
     }
-
 }

@@ -25,8 +25,12 @@
             <add-to-group group-id="ToolsMenu" anchor="last"/>
             <action id="com.github.sebnoirot.copilotpromptplugin.actions.ApplyCopilotPromptAction"
                     class="com.github.sebnoirot.copilotpromptplugin.actions.ApplyCopilotPromptAction"
-                    text="Apply to Project"
-                    description="Apply the best matching Copilot prompt profile to the current project"/>
+                    text="Apply Copilot Instructions"
+                    description="Apply the Copilot instructions to the current project"/>
+            <action id="com.github.sebnoirot.copilotpromptplugin.actions.ApplyGitCommitInstructionsAction"
+                    class="com.github.sebnoirot.copilotpromptplugin.actions.ApplyGitCommitInstructionsAction"
+                    text="Apply Git Commit Instructions"
+                    description="Apply the Git commit instructions to the current project"/>
             <action id="com.github.sebnoirot.copilotpromptplugin.actions.OpenCopilotPromptSettingsAction"
                     class="com.github.sebnoirot.copilotpromptplugin.actions.OpenCopilotPromptSettingsAction"
                     text="Settings"
