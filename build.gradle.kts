@@ -36,8 +36,8 @@ dependencies {
 
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
-        val platformVersion = providers.gradleProperty("platformVersion").get()
-        val platformType = providers.gradleProperty("platformType").get()
+        val platformVersion = providers.gradleProperty("platformVersion").getOrElse("")
+        val platformType = providers.gradleProperty("platformType").getOrElse("IC")
         
         // For 2025.3+, use the unified distribution instead of IC
         // Version format is expected to be YYYY.R.P[.P2][...] with optional -EAP/-RC suffix
@@ -48,7 +48,8 @@ dependencies {
             val baseVersion = platformVersion.substringBefore("-")
             val versionParts = baseVersion.split(".")
             
-            if (versionParts.size >= 2) {
+            // Ensure we have at least 2 parts and both are numeric
+            if (versionParts.size >= 2 && versionParts[0].toIntOrNull() != null && versionParts[1].toIntOrNull() != null) {
                 val year = versionParts[0].toInt()
                 val release = versionParts[1].toInt()
                 // Unified distribution is used for 2025.3 and later
@@ -56,8 +57,8 @@ dependencies {
             } else {
                 false
             }
-        } catch (_: NumberFormatException) {
-            // If version parsing fails, use IC platform (safe default for older versions)
+        } catch (_: Exception) {
+            // If version parsing fails for any reason, use IC platform (safe default)
             false
         }
         
