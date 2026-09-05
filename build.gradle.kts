@@ -40,13 +40,19 @@ dependencies {
         val platformType = providers.gradleProperty("platformType").get()
         
         // For 2025.3+, use the unified distribution instead of IC
-        // Extract version parts and compare: versions 2025.3 and later use unified distribution
-        val versionParts = platformVersion.split(".")
-        val useUnifiedDistribution = if (versionParts.size >= 2) {
-            val year = versionParts[0].toIntOrNull() ?: 0
-            val release = versionParts[1].toIntOrNull() ?: 0
-            year > 2025 || (year == 2025 && release >= 3)
-        } else {
+        // Version format is expected to be YYYY.R.P (e.g., 2025.3.6.1)
+        // where YYYY is year, R is release number, P is patch number
+        val useUnifiedDistribution = try {
+            val versionParts = platformVersion.split(".")
+            if (versionParts.size >= 2) {
+                val year = versionParts[0].toInt()
+                val release = versionParts[1].toInt()
+                // Unified distribution is used for 2025.3 and later
+                year > 2025 || (year == 2025 && release >= 3)
+            } else {
+                false
+            }
+        } catch (e: NumberFormatException) {
             false
         }
         
