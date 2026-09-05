@@ -40,10 +40,14 @@ dependencies {
         val platformType = providers.gradleProperty("platformType").get()
         
         // For 2025.3+, use the unified distribution instead of IC
-        // Version format is expected to be YYYY.R.P (e.g., 2025.3.6.1)
+        // Version format is expected to be YYYY.R.P[.P2][...] with optional -EAP/-RC suffix
         // where YYYY is year, R is release number, P is patch number
+        // Examples: 2025.3.6.1, 2025.3-EAP, 2025.3, 2024.2.5
         val useUnifiedDistribution = try {
-            val versionParts = platformVersion.split(".")
+            // Remove any pre-release/EAP suffix (e.g., "-EAP", "-RC1")
+            val baseVersion = platformVersion.substringBefore("-")
+            val versionParts = baseVersion.split(".")
+            
             if (versionParts.size >= 2) {
                 val year = versionParts[0].toInt()
                 val release = versionParts[1].toInt()
@@ -53,6 +57,7 @@ dependencies {
                 false
             }
         } catch (_: NumberFormatException) {
+            // If version parsing fails, use IC platform (safe default for older versions)
             false
         }
         
