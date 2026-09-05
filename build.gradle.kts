@@ -52,7 +52,7 @@ dependencies {
             } else {
                 false
             }
-        } catch (e: NumberFormatException) {
+        } catch (_: NumberFormatException) {
             false
         }
         
