@@ -2,7 +2,7 @@
 
 # copilot-prompt Changelog
 
-## [Unreleased]
+## [0.0.4] - 2026-09-05
 
 ### Updated
 
@@ -15,6 +15,12 @@
 ### Added
 
 - Add support for Git commit instructions in `.github/git-commit-instructions.md`.
+
+## [Unreleased]
+
+### Updated
+
+### Added
 
 ## [0.0.2] - 2025-05-24
 
@@ -29,6 +35,7 @@
 - Prompt for GitHub Copilot to guide its responses and behavior in line.
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
 
-[Unreleased]: https://github.com/seb-noirot/copilot-prompt/compare/v0.0.2...HEAD
+[Unreleased]: https://github.com/seb-noirot/copilot-prompt/compare/v0.0.4...HEAD
+[0.0.4]: https://github.com/seb-noirot/copilot-prompt/compare/v0.0.2...v0.0.4
 [0.0.2]: https://github.com/seb-noirot/copilot-prompt/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/seb-noirot/copilot-prompt/commits/v0.0.1
