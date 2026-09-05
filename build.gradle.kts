@@ -40,8 +40,17 @@ dependencies {
         val platformType = providers.gradleProperty("platformType").get()
         
         // For 2025.3+, use the unified distribution instead of IC
-        if (platformVersion.startsWith("2025.3") || platformVersion.startsWith("2025.4") || 
-            platformVersion.startsWith("2026")) {
+        // Extract version parts and compare: versions 2025.3 and later use unified distribution
+        val versionParts = platformVersion.split(".")
+        val useUnifiedDistribution = if (versionParts.size >= 2) {
+            val year = versionParts[0].toIntOrNull() ?: 0
+            val release = versionParts[1].toIntOrNull() ?: 0
+            year > 2025 || (year == 2025 && release >= 3)
+        } else {
+            false
+        }
+        
+        if (useUnifiedDistribution) {
             intellijIdea(platformVersion)
         } else {
             create(platformType, platformVersion)
