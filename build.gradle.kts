@@ -36,7 +36,16 @@ dependencies {
 
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
-        create(providers.gradleProperty("platformType"), providers.gradleProperty("platformVersion"))
+        val platformVersion = providers.gradleProperty("platformVersion").get()
+        val platformType = providers.gradleProperty("platformType").get()
+        
+        // For 2025.3+, use the unified distribution instead of IC
+        if (platformVersion.startsWith("2025.3") || platformVersion.startsWith("2025.4") || 
+            platformVersion.startsWith("2026")) {
+            intellijIdea(platformVersion)
+        } else {
+            create(platformType, platformVersion)
+        }
 
         // Plugin Dependencies. Uses `platformBundledPlugins` property from the gradle.properties file for bundled IntelliJ Platform plugins.
         bundledPlugins(providers.gradleProperty("platformBundledPlugins").map { it.split(',') })
