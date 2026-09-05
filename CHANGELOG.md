@@ -4,6 +4,14 @@
 
 ## [Unreleased]
 
+### Updated
+
+- Update plugin to support IntelliJ IDEA 2025.3 and later (unified distribution).
+- Upgrade IntelliJ Platform Gradle Plugin from 2.5.0 to 2.18.1 for latest platform compatibility.
+- Upgrade Gradle from 8.13 to 9.7.1 for improved build performance and reliability.
+- Update platformVersion to 2025.3.6.1 and platformUntilBuild to 253.* for full 2025.3 support.
+- Maintain backward compatibility with IntelliJ IDEA 2024.2 (build 242) and later.
+
 ### Added
 
 - Add support for Git commit instructions in `.github/git-commit-instructions.md`.

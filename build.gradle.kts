@@ -36,7 +36,42 @@ dependencies {
 
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
-        create(providers.gradleProperty("platformType"), providers.gradleProperty("platformVersion"))
+        val platformVersion = providers.gradleProperty("platformVersion").getOrElse("")
+        val platformType = providers.gradleProperty("platformType").getOrElse("IC")
+        
+        // Starting with IntelliJ IDEA 2025.3, JetBrains unified the Community Edition (IC) and
+        // Ultimate Edition (IU) distributions into a single product distribution. This means:
+        // - Versions 2024.2 - 2025.2: Use the IC (Community) platform via create(platformType, version)
+        // - Versions 2025.3+: Use the unified intellijIdea() distribution
+        // This logic ensures the plugin works with all IntelliJ IDEA versions from 2024.2 onwards
+        // while adapting to the new unified distribution model in 2025.3+.
+        
+        val useUnifiedDistribution = try {
+            // Version format is expected to be YYYY.R.P[.P2][...] with optional -EAP/-RC suffix
+            // Examples: 2025.3.6.1, 2025.3-EAP, 2025.3, 2024.2.5
+            // Remove any pre-release/EAP suffix (e.g., "-EAP", "-RC1")
+            val baseVersion = platformVersion.substringBefore("-")
+            val versionParts = baseVersion.split(".")
+            
+            // Ensure we have at least 2 parts and both are numeric
+            if (versionParts.size >= 2 && versionParts[0].toIntOrNull() != null && versionParts[1].toIntOrNull() != null) {
+                val year = versionParts[0].toInt()
+                val release = versionParts[1].toInt()
+                // Unified distribution is used for 2025.3 and later
+                year > 2025 || (year == 2025 && release >= 3)
+            } else {
+                false
+            }
+        } catch (_: Exception) {
+            // If version parsing fails for any reason, use IC platform (safe default)
+            false
+        }
+        
+        if (useUnifiedDistribution) {
+            intellijIdea(platformVersion)
+        } else {
+            create(platformType, platformVersion)
+        }
 
         // Plugin Dependencies. Uses `platformBundledPlugins` property from the gradle.properties file for bundled IntelliJ Platform plugins.
         bundledPlugins(providers.gradleProperty("platformBundledPlugins").map { it.split(',') })
