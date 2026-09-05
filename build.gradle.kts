@@ -39,11 +39,16 @@ dependencies {
         val platformVersion = providers.gradleProperty("platformVersion").getOrElse("")
         val platformType = providers.gradleProperty("platformType").getOrElse("IC")
         
-        // For 2025.3+, use the unified distribution instead of IC
-        // Version format is expected to be YYYY.R.P[.P2][...] with optional -EAP/-RC suffix
-        // where YYYY is year, R is release number, P is patch number
-        // Examples: 2025.3.6.1, 2025.3-EAP, 2025.3, 2024.2.5
+        // Starting with IntelliJ IDEA 2025.3, JetBrains unified the Community Edition (IC) and
+        // Ultimate Edition (IU) distributions into a single product distribution. This means:
+        // - Versions 2024.2 - 2025.2: Use the IC (Community) platform via create(platformType, version)
+        // - Versions 2025.3+: Use the unified intellijIdea() distribution
+        // This logic ensures the plugin works with all IntelliJ IDEA versions from 2024.2 onwards
+        // while adapting to the new unified distribution model in 2025.3+.
+        
         val useUnifiedDistribution = try {
+            // Version format is expected to be YYYY.R.P[.P2][...] with optional -EAP/-RC suffix
+            // Examples: 2025.3.6.1, 2025.3-EAP, 2025.3, 2024.2.5
             // Remove any pre-release/EAP suffix (e.g., "-EAP", "-RC1")
             val baseVersion = platformVersion.substringBefore("-")
             val versionParts = baseVersion.split(".")
